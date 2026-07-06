@@ -37,23 +37,27 @@
             content: "";
             position: absolute;
             top: 0;
-            z-index: 3;
+            z-index: 4;
             border-left: 150px solid transparent;
             border-right: 150px solid transparent;
-            border-top: 100px solid #c2aa93; /* Iets donkerdere flap voor diepte */
+            border-top: 101px solid #c2aa93; /* Iets donkerdere flap voor diepte */
             transform-origin: top;
             transition: transform 0.5s ease-in-out 0.3s, z-index 0.1s linear 0.5s;
         }
 
-        /* De zijkanten en onderkant van de envelop */
-        .envelope::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            z-index: 4;
-            border-left: 150px solid #dcc6b1;
-            border-right: 150px solid #dcc6b1;
-            border-bottom: 100px solid #d4bda7;
+       .envelope::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 3;
+    
+        /* Geef het element exact de volledige grootte                 van de envelop */
+        border-bottom: 100px solid #d4bda7;
+        border-top: 100px solid transparent;
+        border-left: 150px solid #dcc6b1;
+        border-right: 150px solid #dcc6b1;
+        transform-origin: top;
         }
 
         /* De lakzegel (sluiting) */
@@ -130,7 +134,7 @@
         /* 3. Schuif de kaart omhoog uit de envelop */
         .envelope-wrapper.open .card {
             transform: translateY(-130px);
-            z-index: 5; /* Zorgt dat de kaart vóór de envelop komt te staan */
+            z-index: 3; /* Zorgt dat de kaart vóór de envelop komt te staan */
         }
     </style>
 </head>
