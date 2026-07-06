@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the Date!</title>
+    <style>
+        /* Algemene styling van de achtergrond */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4eae1; /* Warme, romantische achtergrondkleur */
+            font-family: 'Georgia', serif;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* De container die de envelop vasthoudt */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* De basisvorm van de envelop */
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: #d4bda7; /* Kleur van de envelop */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* De flap aan de bovenkant van de envelop */
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 3;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #c2aa93; /* Iets donkerdere flap voor diepte */
+            transform-origin: top;
+            transition: transform 0.5s ease-in-out 0.3s, z-index 0.1s linear 0.5s;
+        }
+
+        /* De zijkanten en onderkant van de envelop */
+        .envelope::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            z-index: 4;
+            border-left: 150px solid #dcc6b1;
+            border-right: 150px solid #dcc6b1;
+            border-bottom: 100px solid #d4bda7;
+        }
+
+        /* De lakzegel (sluiting) */
+        .wax-seal {
+            position: absolute;
+            top: 90px;
+            left: 135px;
+            width: 30px;
+            height: 30px;
+            background-color: #962d2d; /* Romantisch bordeauxrood */
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #f4eae1;
+            font-size: 12px;
+            font-weight: bold;
+            transition: transform 0.5s ease-in-out, opacity 0.3s ease 0.3s;
+        }
+
+        /* De uitnodigingskaart die binnenin zit */
+        .card {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 270px;
+            height: 180px;
+            background-color: #ffffff;
+            z-index: 2;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.6s ease-in-out 0.6s, z-index 0.1s linear 0.6s;
+            border: 2px solid #d4bda7;
+        }
+
+        .card h1 {
+            font-size: 20px;
+            margin: 0 0 10px 0;
+            color: #55433c;
+        }
+
+        .card p {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #77625a;
+        }
+
+        .card .date {
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 15px;
+            color: #962d2d;
+        }
+
+        /* ANIMATIES WANNEER DE ENVELOP WORDT GEOPEND */
+        
+        /* 1. Draai de bovenflap omhoog */
+        .envelope-wrapper.open .envelope::before {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        /* 2. Laat de lakzegel meebewegen en vervagen */
+        .envelope-wrapper.open .wax-seal {
+            transform: translateY(-60px) scale(0.5);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 3. Schuif de kaart omhoog uit de envelop */
+        .envelope-wrapper.open .card {
+            transform: translateY(-130px);
+            z-index: 5; /* Zorgt dat de kaart vóór de envelop komt te staan */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Klikbare container voor de envelop -->
+    <div class="envelope-wrapper" onclick="openEnvelope()">
+        <div class="envelope">
+            <!-- De lakzegel met een hartje of initialen -->
+            <div class="wax-seal">♥</div>
+            
+            <!-- De daadwerkelijke uitnodigingskaart -->
+            <div class="card">
+                <h1>Save the Date</h1>
+                <p>Groot Nieuws! Wij gaan trouwen!</p>
+                <p>Namen van het Bruidspaar</p>
+                <p class="date">12 . 09 . 2026</p>
+                <p style="font-size: 11px; font-style: italic;">Meer info volgt snel</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript om de klasse 'open' toe te voegen zodra er geklikt wordt
+        function openEnvelope() {
+            document.querySelector('.envelope-wrapper').classList.add('open');
+        }
+    </script>
+
+</body>
+</html>
