@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the Date!</title>
+    <style>
+        .textured {
+            background-image: url("229-plain-white-paper.webp");
+            background-size: cover;
+            background-position: center;
+        }
+
+        body {
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			min-height: 100vh;
+			margin: 0;
+			overflow: hidden;
+			background-size: cover;
+			background-position: center;
+			/* Default background for mobile (vertical) */
+			background-image: url("Bali.jpeg"); 
+		}
+
+		/* --- Landscape (Laptop/Desktop) Styles --- */
+		@media (orientation: landscape) {
+			body {
+				justify-content: flex-start; /* Move content to the left */
+				padding-left: 10%;           /* Add some breathing room on the left */
+				/* Change to horizontal background image */
+				background-image: url("Denia.jpeg"); 
+				align-items: center;
+			}
+
+			.envelope-wrapper {
+				margin-left: 50px; /* Optional: extra offset from the very edge */
+			}
+		}
+
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            width: 100%;
+            max-width: 450px;
+            margin: 20px;
+            transform: rotate(90deg) scale(4); 
+            transform-origin: center;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            perspective: 1000px;
+			margin-top: 100px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 450 / 300;
+            background-color: #ccb6a1;
+            background-image: url("020-old-brown-paper.webp");
+            border-radius: 4px;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.6),
+                0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- SHADOW WRAPPERS & FLAPS --- */
+        .flap-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        /* 1. Bovenflap (z-index 4) */
+        .top-flap-wrapper {
+            z-index: 4;
+            filter: drop-shadow(0 15px 12px rgba(0, 0, 0, 0.85));
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out 0.8s, z-index 0.1s linear 1.0s;
+        }
+        .top-flap {
+            width: 100%; height: 100%;
+            background-image: url("192-old-dutch-paper.webp");
+            background-size: cover;
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L100,0 L54,46 Q50,50 46,46 Z'/%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L100,0 L54,46 Q50,50 46,46 Z'/%3E%3C/svg%3E");
+            -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+        }
+
+        /* 2. Onderflap (z-index 5 - ligt over de zijflappen heen) */
+        .bottom-flap-wrapper {
+            z-index: 5;
+            filter: drop-shadow(0 -10px 10px rgba(0, 0, 0, 0.75));
+        }
+        .bottom-flap {
+            width: 100%; height: 100%;
+            background-image: url("192-old-dutch-paper.webp");
+            background-size: cover;
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L100,100 L54,46 Q50,42 46,46 Z'/%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L100,100 L54,46 Q50,42 46,46 Z'/%3E%3C/svg%3E");
+            -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+        }
+		
+		.bottom-flap.unlocked {
+			transform: rotateX(-180deg) !important; z-index: 10 !important; 
+			transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+			transform-origin: bottom;
+            background-image: url("020-old-brown-paper.webp");
+		}
+		
+
+		/* Make sure the cursor indicates it's clickable */
+		.bottom-flap-wrapper {
+			cursor: pointer;
+		}
+
+        /* 3. Zijflappen (z-index 3) */
+        .side-flaps-wrapper {
+			perspective: 1000px; /* High value for realistic 3D effect */
+			transform-style: preserve-3d; /* Ensures children keep their 3D positioning */
+			position: relative;
+            z-index: 3;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
+        }
+        .side-flap-left {
+			position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("192-old-dutch-paper.webp");
+            background-size: cover;
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L50,50 L0,100 Z'/%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L50,50 L0,100 Z'/%3E%3C/svg%3E");
+            -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+        }
+		.side-flap-right {
+			position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("192-old-dutch-paper.webp");
+            background-size: cover;
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M100,0 L50,50 L100,100 Z'/%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M100,0 L50,50 L100,100 Z'/%3E%3C/svg%3E");
+            -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+        }
+		
+		/* Left flap: rotates around the left edge */
+		.side-flap-left.unlocked {
+			transform: rotateY(180deg) !important; /* Adjust +/- based on desired direction */
+			transform-origin: left;
+			transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+			z-index: 10 !important;
+            background-image: url("020-old-brown-paper.webp");
+		}
+
+		/* Right flap: rotates around the right edge */
+		.side-flap-right.unlocked {
+			transform: rotateY(-180deg) !important;
+			transform-origin: right;
+			transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+			z-index: 10 !important;
+            background-image: url("020-old-brown-paper.webp");
+		}
+        
+        /* Lakzegel */
+        .wax-seal {
+            position: absolute;
+            top: 45%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-90deg);
+            width: 45px; height: 45px;
+            background: #962d2d;
+            border-radius: 51% 49% 53% 47% / 48% 52% 46% 54%; 
+            z-index: 6;
+            box-shadow: 
+                0 6px 15px rgba(0, 0, 0, 0.85),
+                inset 2px 2px 3px rgba(255,255,255,0.25),
+                inset -2px -2px 4px rgba(0,0,0,0.4);
+            display: flex; justify-content: center; align-items: center;
+            color: #4a0b0b; font-size: 14px; font-weight: bold;
+            text-shadow: -1px -1px 1px rgba(0,0,0,0.4), 1px 1px 1px rgba(255,255,255,0.15);
+            transition: transform 0.5s ease-in-out 0.3s, opacity 0.3s ease 0.6s;
+            border: 1px solid #7a2222;
+        }
+
+        /* De Uitnodigingskaart */
+        .card {
+            position: absolute;
+            bottom: 5%; left: 5%; width: 90%; height: 90%;
+            z-index: 2;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.0s, z-index 0.1s linear 1.0s, height 0.6s ease 1.6s;
+            border: 1px solid #e2d3c4;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .card h1 { font-size: 5vw; margin: 0 0 5px 0; color: #55433c; letter-spacing: 1px; }
+        @media(min-width: 450px) { .card h1 { font-size: 24px; } }
+        .card p { font-size: 14px; margin: 4px 0; color: #77625a; }
+        .card .names { font-size: 18px; font-style: italic; margin: 8px 0; color: #55433c; }
+        .card .date { font-weight: bold; font-size: 16px; margin-top: 5px; color: #962d2d; }
+        .countdown { font-size: 12px; color: #b08d75; font-style: italic; margin-top: 3px; }
+
+        /* Tijdlijn */
+        .timeline-container {
+            position: relative;
+            width: 100%; height: 80px; margin-top: 15px;
+            /*opacity: 0;*/
+            /*transition: opacity 0.5s ease 1.8s;*/
+        }
+        .timeline-svg { width: 100%; height: 100%; overflow: visible; }
+        .timeline-path { fill: none; stroke: #d4bda7; stroke-width: 3; stroke-dasharray: 4 4; }
+        .dot { cursor: pointer; transition: transform 0.2s ease; transform-origin: center; transform-box: fill-box; }
+        .dot:hover { transform: scale(1.3); }
+
+        /* ANIMATIES BIJ OPENEN */
+        .envelope-wrapper.open {
+            transform: translateY(160px) rotate(0deg) scale(1);
+        }
+
+        .envelope-wrapper.open .wax-seal {
+            transform: translate(-50%, -150px) scale(0.5);
+            opacity: 0; pointer-events: none;
+        }
+
+        /* 1. De flap-animatie zelf */
+		.envelope-wrapper.open .top-flap-wrapper {
+			/* We draaien eerst, z-index pas later */
+			transform: rotateX(180deg) !important;
+			/* De z-index veranderen we pas na de animatie via de transition */
+			transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s, z-index 0.1s linear 0.7s;
+			z-index: 1; 
+		}
+
+		/* 2. De kaart animatie: start pas nadat de flap voor 80% geopend is */
+		.envelope-wrapper.open .card {
+			/* Vertraging (delay) toegevoegd van 0.6s zodat de kaart niet door de dichte flap heen schuift */
+			transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s, z-index 0.1s linear 0.6s;
+			transform: translateY(-240px);
+			/*z-index: 7;*/
+			box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65);
+		}
+
+        .envelope-wrapper.open .timeline-container { opacity: 1; }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 480px) or (max-height: 650px) {
+            .envelope-wrapper.open { transform: translateY(110px) scale(0.9) rotate(0deg); }
+            .envelope-wrapper.open .card { transform: translateY(-180px); height: 320px; }
+            .card p { font-size: 12px; }
+            .card .names { font-size: 16px; }
+            .timeline-container { height: 60px; margin-top: 5px; }
+        }
+		
+		/*SECRET CONTENT*/
+		.secret-content {
+			position: absolute;
+			top: 10%; left: 10%; width: 80%;
+			z-index: 1; /* Sits behind the flaps */
+			opacity: 0;
+			transition: opacity 0.5s ease;
+			pointer-events: none;
+		}
+
+		.secret-content.show {
+			opacity: 1;
+		}
+        /* MODAL */
+        .modal {
+            position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+            width: 90%; max-width: 320px;
+            border: 1px solid #d4bda7;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
+            border-radius: 6px; padding: 20px; z-index: 100;
+            opacity: 0; pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center; box-sizing: border-box;
+        }
+        .modal.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+        .modal img { width: 100%; height: 60%; object-fit: cover; border-radius: 4px; margin-bottom: 15px; }
+        .modal h3 { margin: 0 0 10px 0; color: #55433c; font-size: 18px; }
+        .modal p { font-size: 14px; color: #77625a; margin: 0 0 15px 0; line-height: 1.4; }
+        .modal-close { background: #962d2d; color: white; border: none; padding: 8px 16px; font-family: 'Georgia', serif; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+        .modal-close:hover { background: #7a2222; }
+
+        .overlay {
+            position: fixed; top:0; left:0; right:0; bottom:0;
+            background: rgba(40, 30, 25, 0.6); backdrop-filter: blur(4px);
+            z-index: 99; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .overlay.active { opacity: 1; pointer-events: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+        <div class="envelope">
+			<div class="secret-content">
+				<img src="Klooster.webp" style="width: 100%; border-radius: 4px;">
+			</div>
+            <div class="wax-seal">S♥C</div>
+            
+            <div class="flap-container side-flaps-wrapper">
+                <div class="side-flap-right"></div>
+                <div class="side-flap-left"></div>
+            </div>
+            
+            <div class="flap-container bottom-flap-wrapper">
+                <div class="bottom-flap"></div>
+            </div>
+
+            <div class="flap-container top-flap-wrapper">
+                <div class="top-flap"></div>
+            </div>
+
+            <div class="card textured">
+                <div class="card-content">
+                    <h1>Save the Date!</h1>
+                    <p>Groot Nieuws! Wij gaan trouwen!</p>
+                    <div class="names">Stan & Carmen</div>
+                    <div class="date">15 . 05 . 2027</div>
+                    <div class="countdown" id="countdownText">.. dagen tot de bruiloft</div>
+                </div>
+
+                <div class="timeline-container">
+                    <svg class="timeline-svg" id="timelineSvg" viewBox="0 0 360 100">
+                        <path id="wavePath" class="timeline-path" d="M 10 50 C 70 20, 110 80, 180 50 C 250 20, 290 80, 350 50" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeModal()"></div>
+    <div class="modal textured" id="modal">
+        <img id="modalImg" src="" alt="Mijlpaal afbeelding">
+        <h3 id="modalTitle">Mijlpaal</h3>
+        <p id="modalDesc">Beschrijving</p>
+        <button class="modal-close" onclick="closeModal()">Sluiten</button>
+    </div>
+
+    <script>
+        const milestones = [
+            { date: "2019-02-21", title: "De eerste date", desc: "Waar het allemaal begon:", img: "Eerste-ontmoeting.jpeg" },
+            { date: "2021-07-21", title: "Samenwonen!", desc: "Al na 2.5 jaar leek het ons fantastisch om samen te gaan wonen. In een appartement in Oss", img: "Appartement.jpeg" },
+            { date: "2022-09-07", title: "Eerste vakantie", desc: "Omdat het samenwonen zo goed beviel, besloten we ook op vakantie te gaan.", img: "Italy.jpeg" },
+            { date: "2025-09-15", title: "Het Aanzoek!", desc: "Stan ging op zijn knieën op vakantie in Bariloche.", img: "20250915_170649.jpg" },
+            { date: "2027-05-15", title: "De Grote Dag!", desc: "Vanaf deze day gaan we samen als man en vrouw door het leven.", img: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=400" }
+        ];
+
+        const startDate = new Date("2019-02-19");
+        const weddingDate = new Date("2027-05-15");
+        const totalDuration = weddingDate - startDate;
+
+        function openEnvelope() {
+            document.getElementById('envelopeWrapper').classList.add('open');
+        }
+
+        const today = new Date();
+        const timeDiff = weddingDate - today;
+        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+        document.getElementById('countdownText').innerText = `${daysLeft} dagen tot de bruiloft`;
+	
+		// Add these variables at the top of your script
+		let clickCount = 0;
+		const clickLimit = 2	;
+
+		// Locate the bottom flap element
+		const bottomFlap = document.querySelector('.bottom-flap');
+		const leftFlap = document.querySelector('.side-flap-left');
+		const rightFlap = document.querySelector('.side-flap-right');
+
+		// JavaScript click listener
+		bottomFlap.addEventListener('click', function(e) {
+			e.stopPropagation(); 
+			clickCount++;
+			
+			if (clickCount === clickLimit) {
+				// 1. Trigger the visual rotation
+				bottomFlap.classList.add('unlocked');
+				leftFlap.classList.add('unlocked');
+				rightFlap.classList.add('unlocked');
+				
+				// 2. Reveal the image
+				document.querySelector('.secret-content').classList.add('show');
+			} else {
+				// Visual feedback
+				bottomFlap.style.transform = 'translateY(5px)';
+				setTimeout(() => { bottomFlap.style.transform = 'translateY(0)'; }, 150);
+			}
+		});
+
+        window.onload = function() {
+            const path = document.getElementById('wavePath');
+            const svg = document.getElementById('timelineSvg');
+            const pathLength = path.getTotalLength();
+
+            milestones.forEach(m => {
+                const mDate = new Date(m.date);
+                const percentage = (mDate - startDate) / totalDuration;
+                
+                if(percentage >= 0 && percentage <= 1) {
+                    const point = path.getPointAtLength(percentage * pathLength);
+                    
+                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    circle.setAttribute("cx", point.x);
+                    circle.setAttribute("cy", point.y);
+                    circle.setAttribute("r", "7");
+                    circle.setAttribute("fill", "#b08d75");
+                    circle.setAttribute("stroke", "#fdfbf7");
+                    circle.setAttribute("stroke-width", "2");
+                    circle.setAttribute("class", "dot");
+                    
+                    circle.onclick = function(e) {
+                        e.stopPropagation();
+                        openModal(m);
+                    };
+                    
+                    svg.appendChild(circle);
+                }
+            });
+
+            const currentPercentage = (today - startDate) / totalDuration;
+            if(currentPercentage >= 0 && currentPercentage <= 1) {
+                const currentPoint = path.getPointAtLength(currentPercentage * pathLength);
+                
+                const currentDot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                currentDot.setAttribute("cx", currentPoint.x);
+                currentDot.setAttribute("cy", currentPoint.y);
+                currentDot.setAttribute("r", "9");
+                currentDot.setAttribute("fill", "#962d2d");
+                currentDot.setAttribute("stroke", "#fdfbf7");
+                currentDot.setAttribute("stroke-width", "2");
+                currentDot.setAttribute("style", "filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.6));");
+                svg.appendChild(currentDot);
+            }
+        };
+
+        function openModal(milestone) {
+            document.getElementById('modalTitle').innerText = milestone.title;
+            document.getElementById('modalDesc').innerText = milestone.desc;
+            document.getElementById('modalImg').src = milestone.img;
+            
+            document.getElementById('modal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
